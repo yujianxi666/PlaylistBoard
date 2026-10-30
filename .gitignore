@@ -1,0 +1,19 @@
+# 截图与浏览器临时资料，不参与页面运行
+.shots/
+
+# 依赖（本项目零依赖，留着以防以后手滑 npm install）
+node_modules/
+
+# 系统 / 编辑器噪音
+.DS_Store
+Thumbs.db
+*.log
+.vscode/
+.idea/
+
+# 本地环境变量（本项目没有，但避免以后误传）
+.env
+.env.*
+
+# 参考项目：独立的 GameBoard 仓库，不进入本仓库
+GameBoard/

@@ -1,0 +1,175 @@
+/* =========================================================================
+   tokens.css / 设计令牌
+   ---------------------------------------------------------------------
+   这套令牌沿用 GameBoard 档案版的视觉系统：石墨底、单一琥珀强调色、
+   等宽数字、4/3px 两级圆角。换主题或换强调色只需要改这一层。
+
+   主题策略：CSS 变量 + [data-theme]，默认暗色，可跟随系统或手动覆盖。
+   ========================================================================= */
+
+/* ---------------------------------------------------------------- 字体
+   全部使用系统已安装字体，不发起任何网络请求：
+     · Latin   Segoe UI Variable（可变字重，Win11）/ Segoe UI / system-ui
+     · 中文     Noto Sans SC → 微软雅黑 → PingFang SC
+     · 等宽     Cascadia Mono → Consolas → SF Mono
+   中文字形不会被 Latin 字体覆盖，浏览器的逐字回退会自动接力，
+   所以中英混排能保持视觉重量一致。 */
+:root {
+  --font-sans:
+    "Segoe UI Variable Text", "Segoe UI Variable", "Segoe UI", system-ui,
+    -apple-system, "Noto Sans SC", "Microsoft YaHei UI", "Microsoft YaHei",
+    "PingFang SC", sans-serif;
+  --font-display:
+    "Segoe UI Variable Display", "Segoe UI Variable", "Segoe UI", system-ui,
+    -apple-system, "Noto Sans SC", "Microsoft YaHei UI", "Microsoft YaHei",
+    "PingFang SC", sans-serif;
+  --font-mono:
+    "Cascadia Mono", "Cascadia Code", Consolas, ui-monospace, "SF Mono",
+    "Noto Sans SC", "Microsoft YaHei UI", monospace;
+}
+
+/* ---------------------------------------------------------------- 字阶
+   “PlaylistBoard.” 比 “GameBoard.” 长，展示级字号上限相应收小，
+   保证它和右侧的歌单卡 / 读数并排时不会撞在一起。 */
+:root {
+  --t-display: clamp(2.4rem, 6vw, 6rem);
+  --t-h1: clamp(1.9rem, 3.6vw, 3.1rem);
+  --t-h2: clamp(1.35rem, 2.1vw, 1.85rem);
+  --t-h3: 1.075rem;
+  --t-body: 0.95rem;
+  --t-small: 0.83rem;
+  --t-micro: 0.715rem;
+
+  --track-display: -0.045em;
+  --track-tight: -0.02em;
+  --track-label: 0.16em;
+
+  --lh-display: 0.86;
+  --lh-tight: 1.12;
+  --lh-body: 1.62;
+}
+
+/* ---------------------------------------------------------------- 间距
+   8px 基准的间距阶梯 + 版心约束。 */
+:root {
+  --sp-1: 0.25rem;
+  --sp-2: 0.5rem;
+  --sp-3: 0.75rem;
+  --sp-4: 1rem;
+  --sp-5: 1.5rem;
+  --sp-6: 2rem;
+  --sp-7: 3rem;
+  --sp-8: 4rem;
+  --sp-9: 6rem;
+
+  --gutter: clamp(1.25rem, 2vw, 2.25rem);
+  --measure: 66ch;
+}
+
+/* ---------------------------------------------------------------- 形状
+   一套圆角规则，全站遵守：
+     · 容器 4px（近乎直角，档案感）
+     · 控件 3px
+     · 仅“状态点 / 计数徽标”允许全圆
+   混用必须来自这条规则，不允许随手写别的值。 */
+:root {
+  --r-container: 4px;
+  --r-control: 3px;
+  --r-pill: 999px;
+}
+
+/* ---------------------------------------------------------------- 动效
+   ease 统一为一条缓出曲线；时长分三档。 */
+:root {
+  --dur-1: 140ms;
+  --dur-2: 260ms;
+  --dur-3: 520ms;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --stagger: 34ms;
+}
+
+/* ---------------------------------------------------------------- 层级
+   集中管理，禁止在组件里写魔法数字。 */
+:root {
+  --z-base: 0;
+  --z-sticky: 20;
+  --z-rail: 30;
+  --z-overlay: 40;
+  --z-grain: 60;
+}
+
+/* ================================================================ 主题 */
+
+/* 暗色：墨黑石墨底，偏冷的中性灰阶。刻意避开纯 #000。 */
+:root,
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg: #0d0e11;
+  --bg-deep: #08090b;
+  --surface: #14161a;
+  --surface-2: #1a1d22;
+  --surface-3: #212429;
+
+  --line: #26292f;
+  --line-strong: #3a3e45;
+
+  --ink: #f1f1ef;
+  --ink-2: #a9adb5;
+  --ink-3: #7c818a;
+  --ink-4: #5a5f67;
+
+  /* 唯一的强调色：低饱和琥珀，只用于“当前选中”与焦点。
+     饱和度 78%，低于 80% 上限，和冷灰底形成温度差而不是撞色。 */
+  --accent: #d9903a;
+  --accent-ink: #1a1205;
+  --accent-soft: rgba(217, 144, 58, 0.13);
+  --accent-line: rgba(217, 144, 58, 0.42);
+  --accent-glow: rgba(217, 144, 58, 0.08);
+
+  /* 阴影带底色色相（冷调），不用纯黑 */
+  --shadow-1: 0 1px 2px rgba(4, 6, 10, 0.5);
+  --shadow-2: 0 12px 32px -12px rgba(4, 6, 10, 0.72);
+  --shadow-3: 0 32px 70px -28px rgba(2, 4, 8, 0.86);
+
+  --scrim: rgba(8, 9, 11, 0.82);
+  --skeleton: #202329;
+  --skeleton-sheen: rgba(255, 255, 255, 0.045);
+  --grain-opacity: 0.05;
+  --grain-blend: overlay;
+}
+
+/* 亮色：纸感冷白，同一套灰阶取反。 */
+[data-theme="light"] {
+  color-scheme: light;
+
+  --bg: #f4f3f0;
+  --bg-deep: #e9e8e4;
+  --surface: #fbfaf8;
+  --surface-2: #f0efeb;
+  --surface-3: #e4e3de;
+
+  --line: #d9d8d2;
+  --line-strong: #b7b6ae;
+
+  --ink: #16181b;
+  --ink-2: #55595f;
+  --ink-3: #64686f;
+  --ink-4: #8b8f96;
+
+  --accent: #9c5f14;
+  --accent-ink: #fff8ec;
+  --accent-soft: rgba(156, 95, 20, 0.1);
+  --accent-line: rgba(156, 95, 20, 0.38);
+  --accent-glow: rgba(156, 95, 20, 0.06);
+
+  --shadow-1: 0 1px 2px rgba(38, 36, 30, 0.08);
+  --shadow-2: 0 14px 34px -16px rgba(38, 36, 30, 0.22);
+  --shadow-3: 0 34px 72px -30px rgba(38, 36, 30, 0.28);
+
+  --scrim: rgba(233, 232, 228, 0.86);
+  --skeleton: #e2e1dc;
+  --skeleton-sheen: rgba(255, 255, 255, 0.6);
+  --grain-opacity: 0.035;
+  --grain-blend: multiply;
+}
